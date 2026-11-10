@@ -1,0 +1,64 @@
+name: PROBALIA APP - Publier le lecteur Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions: {}
+concurrency:
+  group: probalia-app-pages
+  cancel-in-progress: false
+jobs:
+  build:
+    if: >-
+      !github.event.repository.private &&
+      github.ref == 'refs/heads/main' &&
+      vars.PROBALIA_PAGES_ENABLED == 'true'
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Assembler les fichiers APP autorisés
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import {execFileSync} from 'node:child_process';
+          import {copyFile,lstat,mkdir} from 'node:fs/promises';
+          import path from 'node:path';
+          const files=['.nojekyll','data/release.json','icons/icon-180.png','icons/icon-192.png','icons/icon-512.png',
+            'icons/icon.svg','index.html','manifest.webmanifest','sw.js','viewer.css','viewer.js'];
+          const expected=[...files,'.github/workflows/deploy.yml'].sort().join('\n');
+          if(execFileSync('git',['ls-files'],{encoding:'utf8'}).trim()!==expected)throw Error('Inventaire APP inattendu');
+          const output=path.join(process.env.RUNNER_TEMP,'probalia-app');
+          await mkdir(output);
+          for(const file of files){
+            if(!(await lstat(file)).isFile())throw Error('Type de fichier APP inattendu');
+            const target=path.join(output,file);
+            await mkdir(path.dirname(target),{recursive:true});
+            await copyFile(file,target);
+          }
+          NODE
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: ${{ runner.temp }}/probalia-app
+          retention-days: 1
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

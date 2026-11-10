@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f8f6f2">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="PROBALIA">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>PROBALIA V5.0.4 · Ligue 1</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/icon-180.png">
+  <link rel="icon" href="./icons/icon.svg">
+  <link rel="stylesheet" href="./viewer.css">
+  <script type="module" src="./viewer.js"></script>
+</head>
+<body>
+  <header><a class="brand" href="#accueil"><span aria-hidden="true">P·</span> PROBALIA <small>V5.0.4</small></a><nav aria-label="Navigation"><a href="#matchs">Matchs</a><a href="#top">Top 3</a><a href="#apprentissage">Suivi</a><a href="#simulation">Ticket</a></nav></header>
+  <main id="accueil">
+    <section class="hero"><p class="kicker">LIGUE 1 · TABLEAU DE BORD</p><h1>Les matchs, en probabilités.</h1>
+      <p>Le programme du week-end, les sélections admissibles et les prévisions figées, au même endroit.</p>
+      <p id="status" role="status">Vérification du dernier lot…</p><p id="milestones"></p>
+      <div class="hero-actions"><button id="refresh" type="button">Actualiser</button>
+      <details><summary>Installer sur iPhone</summary><p>Dans Safari, utilise Partager puis Sur l’écran d’accueil.</p></details></div>
+    </section>
+    <nav class="quick" aria-label="Parcours rapide"><a href="#matchs"><b>01 · Le calendrier</b><small id="weekend-range">Week-end</small></a><a href="#top"><b>02 · Les sélections</b><small>Top 3 et combinés</small></a><a href="#simulation"><b>03 · Mon ticket</b><small>Simuler de 2 à 5 matchs</small></a></nav>
+    <section id="matchs" class="panel"><p class="kicker">01 · CALENDRIER</p><h2>Le programme du week-end</h2><div id="calendar-days" class="days" role="group" aria-label="Jours du week-end"></div><div id="calendar" aria-live="polite"><p>Chargement des rencontres…</p></div></section>
+    <div class="spotlights">
+      <section id="top" class="panel"><p class="kicker">02 · SÉLECTIONS</p><h2>Top 3 du week-end</h2><p class="muted">85 % minimum et équipes distinctes. Estimations exploratoires pour les marchés dérivés.</p><div id="top-picks"></div></section>
+      <section id="combos" class="panel"><p class="kicker">PROBABILITÉS CONJOINTES</p><h2>Combinés automatiques</h2><p class="muted">Tickets admissibles calculés dans CORE. La probabilité conjointe suppose l’indépendance des rencontres.</p><div id="auto-combos"></div></section>
+    </div>
+    <section id="apprentissage" class="panel"><p class="kicker">APPRENTISSAGE PROSPECTIF</p><h2>Champion et Challenger</h2><div id="learning"><p>Chargement du suivi…</p></div></section>
+    <section id="bilan" class="panel"><h2>Bilan des prévisions figées</h2><div id="performance"></div><div id="recent"></div></section>
+    <section id="simulation" class="panel"><p class="kicker">03 · CRÉATEUR DE COMBINÉS</p><h2>Mon ticket personnalisé</h2><p>Choisis de deux à cinq matchs distincts. La cote saisie est facultative. La probabilité conjointe suppose l’indépendance des sélections.</p>
+      <form id="ticket"><div id="legs"></div><div class="ticket-actions"><button id="add-leg" type="button" class="secondary">Ajouter un match</button><label>Mise simulée (€)<input name="stake" type="number" inputmode="decimal" min="0.01" max="100000" step="0.01" value="0.50" required></label><button>Simuler</button></div></form>
+      <p id="simulation-result" aria-live="polite"></p>
+    </section>
+    <section id="cotes" class="panel"><h2>Comparer une cote manuelle</h2><p>La cote équitable et l’espérance sont des résultats théoriques. Aucun flux de cotes n’est requis.</p>
+      <form id="quote-form"><div class="quote-fields"><label>Rencontre<select name="match"></select></label><label>Marché<select name="market"></select></label><label>Cote décimale<input name="odds" type="number" inputmode="decimal" min="1.01" max="1000" step="0.01"></label></div><button>Comparer</button></form>
+      <p id="quote-result" aria-live="polite"></p>
+      <details><summary>Radar de cotes et combinés fondés sur des prix observés</summary><p>Source non autorisée pour l’APP. Les cotes brutes et les historiques de prix restent privés.</p></details>
+    </section>
+    <section id="risques" class="panel"><h2>Profils de risque</h2><p class="muted">Prudent, équilibré et audacieux selon les seuils du moteur. Ces profils ne garantissent aucun résultat.</p><div id="profiles" class="cards"></div></section>
+    <section id="diagnostic" class="panel"><h2>Diagnostic historique et calibration</h2><p class="muted">Le test chronologique est distinct du bilan prospectif. Son ajustement candidat ne modifie pas les probabilités publiées.</p><div id="historical"></div></section>
+    <section id="equipes" class="panel"><h2>Statistiques récentes des équipes</h2><p>Forme et buts sur les cinq derniers matchs officiels disponibles, avec ventilation domicile et extérieur.</p><div id="team-stats"></div><p class="muted">Source non autorisée pour les tirs, corners et statistiques avancées.</p></section>
+    <section id="tactique" class="panel"><h2>Analyse tactique</h2><p>Source non autorisée pour l’APP. Les événements détaillés, compositions et données individuelles sont indisponibles.</p></section>
+    <section id="intelligence" class="panel"><h2>Intelligence sourcée</h2><p>Source non autorisée pour l’APP. La veille et les notes privées restent dans CORE.</p></section>
+    <footer>Probabilités expérimentales. <a href="https://www.football-data.org/" rel="noopener noreferrer" lang="en">Football data provided by the Football-Data.org API</a>.</footer>
+  </main>
+  <nav class="mobile-nav" aria-label="Raccourcis mobiles"><a href="#matchs">Matchs</a><a href="#top">Top 3</a><a href="#combos">Combinés</a><a href="#simulation">Mon ticket</a></nav>
+</body>
+</html>
